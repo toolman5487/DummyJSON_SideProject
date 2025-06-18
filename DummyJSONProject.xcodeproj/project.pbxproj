@@ -6,8 +6,15 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		1539EF412E02BA4700ABE12E /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1539EF402E02BA4700ABE12E /* LoginViewController.swift */; };
+		1539EF442E02BCC400ABE12E /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 1539EF432E02BCC400ABE12E /* SnapKit */; };
+		1539EF472E02BCD800ABE12E /* SDWebImage in Frameworks */ = {isa = PBXBuildFile; productRef = 1539EF462E02BCD800ABE12E /* SDWebImage */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXFileReference section */
 		1539EF232E02B99400ABE12E /* DummyJSONProject.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DummyJSONProject.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		1539EF402E02BA4700ABE12E /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -36,6 +43,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1539EF472E02BCD800ABE12E /* SDWebImage in Frameworks */,
+				1539EF442E02BCC400ABE12E /* SnapKit in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -45,6 +54,11 @@
 		1539EF1A2E02B99400ABE12E = {
 			isa = PBXGroup;
 			children = (
+				1539EF482E02C8FB00ABE12E /* New Group */,
+				1539EF3E2E02B9DE00ABE12E /* Services */,
+				1539EF3D2E02B9D900ABE12E /* Views */,
+				1539EF3C2E02B9D000ABE12E /* ViewModels */,
+				1539EF3B2E02B9CA00ABE12E /* Models */,
 				1539EF252E02B99400ABE12E /* DummyJSONProject */,
 				1539EF242E02B99400ABE12E /* Products */,
 			);
@@ -56,6 +70,50 @@
 				1539EF232E02B99400ABE12E /* DummyJSONProject.app */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		1539EF3B2E02B9CA00ABE12E /* Models */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		1539EF3C2E02B9D000ABE12E /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
+		1539EF3D2E02B9D900ABE12E /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				1539EF3F2E02BA2E00ABE12E /* LoginView */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		1539EF3E2E02B9DE00ABE12E /* Services */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
+		1539EF3F2E02BA2E00ABE12E /* LoginView */ = {
+			isa = PBXGroup;
+			children = (
+				1539EF402E02BA4700ABE12E /* LoginViewController.swift */,
+			);
+			path = LoginView;
+			sourceTree = "<group>";
+		};
+		1539EF482E02C8FB00ABE12E /* New Group */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = "New Group";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -78,6 +136,8 @@
 			);
 			name = DummyJSONProject;
 			packageProductDependencies = (
+				1539EF432E02BCC400ABE12E /* SnapKit */,
+				1539EF462E02BCD800ABE12E /* SDWebImage */,
 			);
 			productName = DummyJSONProject;
 			productReference = 1539EF232E02B99400ABE12E /* DummyJSONProject.app */;
@@ -107,6 +167,10 @@
 			);
 			mainGroup = 1539EF1A2E02B99400ABE12E;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				1539EF422E02BCC400ABE12E /* XCRemoteSwiftPackageReference "SnapKit" */,
+				1539EF452E02BCD800ABE12E /* XCRemoteSwiftPackageReference "SDWebImage" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 1539EF242E02B99400ABE12E /* Products */;
 			projectDirPath = "";
@@ -132,6 +196,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1539EF412E02BA4700ABE12E /* LoginViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -150,7 +215,6 @@
 				INFOPLIST_FILE = DummyJSONProject/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UIMainStoryboardFile = Main;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -178,7 +242,6 @@
 				INFOPLIST_FILE = DummyJSONProject/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UIMainStoryboardFile = Main;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -337,6 +400,38 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		1539EF422E02BCC400ABE12E /* XCRemoteSwiftPackageReference "SnapKit" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/SnapKit/SnapKit";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.7.1;
+			};
+		};
+		1539EF452E02BCD800ABE12E /* XCRemoteSwiftPackageReference "SDWebImage" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/SDWebImage/SDWebImage";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.21.1;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		1539EF432E02BCC400ABE12E /* SnapKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 1539EF422E02BCC400ABE12E /* XCRemoteSwiftPackageReference "SnapKit" */;
+			productName = SnapKit;
+		};
+		1539EF462E02BCD800ABE12E /* SDWebImage */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 1539EF452E02BCD800ABE12E /* XCRemoteSwiftPackageReference "SDWebImage" */;
+			productName = SDWebImage;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 1539EF1B2E02B99400ABE12E /* Project object */;
 }
