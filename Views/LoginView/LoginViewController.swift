@@ -8,49 +8,54 @@
 import Foundation
 import UIKit
 import SnapKit
+import Combine
+import CombineCocoa
 
 
 class LoginViewController:UIViewController{
     
+    private let authVM = AuthViewModel(authService: AuthService())
+    private var cancellables = Set<AnyCancellable>()
+    
     private let usernameField: UITextField = {
-        let tf = UITextField()
-        tf.placeholder = "帳號"
-        tf.text = "kminchelle"
-        tf.borderStyle = .roundedRect
-        tf.autocapitalizationType = .none
-        tf.autocorrectionType = .no
-        tf.clearButtonMode = .whileEditing
-        return tf
+        let text = UITextField()
+        text.placeholder = "帳號"
+        text.text = "emilys"
+        text.borderStyle = .roundedRect
+        text.autocapitalizationType = .none
+        text.autocorrectionType = .no
+        text.clearButtonMode = .whileEditing
+        return text
     }()
     
     private let eyeButton: UIButton = {
-        let btn = UIButton(type: .system)
-        btn.setImage(UIImage(systemName: "eye.circle"), for: .normal)
-        btn.tintColor = .secondaryLabel
-        btn.frame = CGRect(x: 0, y: 0, width: 32, height: 32)
-        return btn
+        let button = UIButton(type: .system)
+        button.setImage(UIImage(systemName: "eye.circle"), for: .normal)
+        button.tintColor = .secondaryLabel
+        button.frame = CGRect(x: 0, y: 0, width: 32, height: 32)
+        return button
     }()
     
     private let passwordField: UITextField = {
-        let tf = UITextField()
-        tf.placeholder = "密碼"
-        tf.text = "0lelplR"
-        tf.borderStyle = .roundedRect
-        tf.isSecureTextEntry = true
-        tf.clearButtonMode = .whileEditing
-        return tf
+        let text = UITextField()
+        text.placeholder = "密碼"
+        text.text = "emilyspass"
+        text.borderStyle = .roundedRect
+        text.isSecureTextEntry = true
+        text.clearButtonMode = .whileEditing
+        return text
     }()
     
     private let loginButton: UIButton = {
-        let btn = UIButton(type: .system)
-        btn.setTitle("登入", for: .normal)
-        btn.titleLabel?.font = .boldSystemFont(ofSize: 20)
-        btn.backgroundColor = UIColor.label
-        btn.setTitleColor(.systemBackground, for: .normal)
-        btn.setTitleColor(.label, for: .highlighted)
-        btn.layer.cornerRadius = 20
-        btn.layer.masksToBounds = true
-        return btn
+        let button = UIButton(type: .system)
+        button.setTitle("登入", for: .normal)
+        button.titleLabel?.font = .boldSystemFont(ofSize: 20)
+        button.backgroundColor = UIColor.label
+        button.setTitleColor(.systemBackground, for: .normal)
+        button.setTitleColor(.label, for: .highlighted)
+        button.layer.cornerRadius = 20
+        button.layer.masksToBounds = true
+        return button
     }()
     
     private lazy var stackView: UIStackView = {
@@ -68,6 +73,7 @@ class LoginViewController:UIViewController{
         setupNavigationTitle()
         setupUI()
         setupEyeButton()
+        bindingVM()
     }
     
     private func setupNavigationTitle() {
@@ -106,5 +112,51 @@ class LoginViewController:UIViewController{
         stackView.snp.makeConstraints { make in
             make.centerX.centerY.equalToSuperview()
         }
+    }
+    
+    private func bindingVM(){
+        loginButton
+            .tapPublisher
+            .sink { [weak self] in
+                if let self = self {
+                    let username = self.usernameField.text ?? ""
+                    let password = self.passwordField.text ?? ""
+                    self.authVM.login(username: username, password: password)
+                }
+            }
+            .store(in: &cancellables)
+        
+        authVM.$isLoading
+            .receive(on: RunLoop.main)
+            .sink { [weak self] loading in
+                print("is Loading")
+            }
+            .store(in: &cancellables)
+        
+        authVM.$loginResponse
+            .compactMap { $0 }
+            .receive(on: RunLoop.main)
+            .sink { [weak self] response in
+                UserDefaults.standard.set(response.accessToken, forKey: "accessToken")
+                UserDefaults.standard.set(response.refreshToken, forKey: "refreshToken")
+                guard let self = self,
+                      let windowScene = self.view.window?.windowScene,
+                      let sceneDelegate = windowScene.delegate as? SceneDelegate,
+                      let window = sceneDelegate.window else {
+                    return
+                }
+                let tabBarController = MainTabBarController()
+                window.rootViewController = tabBarController
+                window.makeKeyAndVisible()
+            }
+            .store(in: &cancellables)
+        
+        authVM.$errorMessage
+            .compactMap { $0 }
+            .receive(on: RunLoop.main)
+            .sink { [weak self] errorMsg in
+                print("Error: \(errorMsg)")
+            }
+            .store(in: &cancellables)
     }
 }

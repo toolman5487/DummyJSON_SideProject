@@ -5,12 +5,19 @@
 //  Created by Willy Hsu on 2025/6/18.
 //
 
+import Foundation
 import UIKit
+import Combine
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     
     var window: UIWindow?
+    private var authService = AuthService()
+    private var cancellables = Set<AnyCancellable>()
     
+    private var currentRefreshToken: String {
+        UserDefaults.standard.string(forKey: "refreshToken") ?? ""
+    }
     
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         // Use this method to optionally configure and attach the UIWindow `window` to the provided UIWindowScene `scene`.
@@ -27,9 +34,15 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         
         guard let windowScene = (scene as? UIWindowScene) else { return }
         let window = UIWindow(windowScene: windowScene)
-        let loginVC = LoginViewController()
-        let nav = UINavigationController(rootViewController: loginVC)
-        window.rootViewController = nav
+        let accessToken = UserDefaults.standard.string(forKey: "accessToken")
+        if let token = accessToken, !token.isEmpty {
+            let tabBar = MainTabBarController()
+            window.rootViewController = tabBar
+        } else {
+            let loginVC = LoginViewController()
+            let nav = UINavigationController(rootViewController: loginVC)
+            window.rootViewController = nav
+        }
         self.window = window
         window.makeKeyAndVisible()
     }
@@ -44,6 +57,20 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     func sceneDidBecomeActive(_ scene: UIScene) {
         // Called when the scene has moved from an inactive state to an active state.
         // Use this method to restart any tasks that were paused (or not yet started) when the scene was inactive.
+        authService.refreshToken(currentRefreshToken)
+            .sink(receiveCompletion: { completion in
+                switch completion {
+                case .finished:
+                    print("Refresh token succeeded")
+                case .failure(let error):
+                    print("Refresh token failed: \(error.localizedDescription)")
+                }
+            }, receiveValue: { loginResponse in
+                UserDefaults.standard.set(loginResponse.accessToken, forKey: "accessToken")
+                UserDefaults.standard.set(loginResponse.refreshToken, forKey: "refreshToken")
+                print("Tokens updated")
+            })
+            .store(in: &cancellables)
     }
     
     func sceneWillResignActive(_ scene: UIScene) {
