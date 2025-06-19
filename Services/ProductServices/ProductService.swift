@@ -11,24 +11,39 @@ import Combine
 protocol ProductServiceProtocol {
     func fetchAllProducts() -> AnyPublisher<[ProductModel], Error>
     func fetchProduct(id: Int) -> AnyPublisher<ProductModel, Error>
+    func fetchProductPage(limit: Int, skip: Int) -> AnyPublisher<ProductListResponse, Error>
 }
 
 class ProductService:ProductServiceProtocol {
-
+    
     func fetchAllProducts() -> AnyPublisher<[ProductModel], Error> {
-        let url = URL(string: "https://dummyjson.com/products")!
+        let url = APIConfig.baseURL.appendingPathComponent("products")
         return URLSession.shared.dataTaskPublisher(for: url)
             .map(\.data)
             .decode(type: ProductListResponse.self, decoder: JSONDecoder())
             .map { $0.products }
             .eraseToAnyPublisher()
     }
-
+    
     func fetchProduct(id: Int) -> AnyPublisher<ProductModel, Error> {
-        let url = URL(string: "https://dummyjson.com/products/\(id)")!
+        let url = APIConfig.baseURL.appendingPathComponent("products/\(id)")
         return URLSession.shared.dataTaskPublisher(for: url)
             .map(\.data)
             .decode(type: ProductModel.self, decoder: JSONDecoder())
+            .eraseToAnyPublisher()
+    }
+    
+    func fetchProductPage(limit: Int, skip: Int) -> AnyPublisher<ProductListResponse, Error> {
+        var components = URLComponents(url: APIConfig.baseURL.appendingPathComponent("products"), resolvingAgainstBaseURL: false)!
+        components.queryItems = [
+            URLQueryItem(name: "limit", value: "\(limit)"),
+            URLQueryItem(name: "skip", value: "\(skip)")
+        ]
+        let url = components.url!
+        
+        return URLSession.shared.dataTaskPublisher(for: url)
+            .map(\.data)
+            .decode(type: ProductListResponse.self, decoder: JSONDecoder())
             .eraseToAnyPublisher()
     }
 }

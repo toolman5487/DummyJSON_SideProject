@@ -11,23 +11,38 @@ import Combine
 
 class ProductsViewController: UIViewController {
     
+    private let refreshControl = UIRefreshControl()
     private let tableView = UITableView()
-    private let viewModel = ProductsViewModel()
+    private let productVM = ProductsViewModel()
     private var products: [ProductModel] = []
     private var cancellables = Set<AnyCancellable>()
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        setupTitle()
+        setupNavg()
         setupTableView()
         bindViewModel()
-        viewModel.fetchProducts()
+        productVM.fetchProducts()
     }
     
-    private func setupTitle() {
+    private func setupNavg() {
         self.title = "商品列表"
         navigationController?.navigationBar.prefersLargeTitles = true
         navigationItem.largeTitleDisplayMode = .always
+        let refreshItem = UIBarButtonItem(barButtonSystemItem: .refresh, target: self, action: #selector(refreshTable))
+        refreshItem.tintColor = .systemBackground
+        navigationItem.rightBarButtonItem = refreshItem
+    }
+    
+    @objc private func refreshTable() {
+        productVM.fetchProductPage(limit: 30, skip: 0)
+    }
+    
+    @objc private func handleRefresh() {
+        let offsetPoint = CGPoint(x: 0, y: -refreshControl.frame.size.height - 40) 
+        tableView.setContentOffset(offsetPoint, animated: true)
+        refreshControl.beginRefreshing()
+        productVM.fetchProductPage(limit: 30, skip: 0)
     }
     
     private func setupTableView() {
@@ -37,16 +52,19 @@ class ProductsViewController: UIViewController {
         tableView.delegate = self
         tableView.register(ProductTableViewCell.self, forCellReuseIdentifier: "ProductCell")
         tableView.rowHeight = UITableView.automaticDimension
-        
+        tableView.refreshControl = refreshControl
+        refreshControl.addTarget(self, action: #selector(handleRefresh), for: .valueChanged)
+        refreshControl.tintColor = .systemBackground
     }
     
     private func bindViewModel() {
-        viewModel.$products
+        productVM.$products
             .receive(on: DispatchQueue.main)
             .sink { [weak self] products in
                 self?.products = products
-                print("目前產品數量：", products.count)
+                print("Renew List Count:", products.count)
                 self?.tableView.reloadData()
+                self?.refreshControl.endRefreshing()
             }
             .store(in: &cancellables)
     }

@@ -23,11 +23,30 @@ class ProductsViewModel {
         productService.fetchAllProducts()
             .receive(on: DispatchQueue.main)
             .sink(receiveCompletion: { [weak self] completion in
-                if case let .failure(error) = completion {
+                switch completion {
+                case .finished:
+                    break
+                case .failure(let error):
                     self?.errorMessage = error.localizedDescription
                 }
             }, receiveValue: { [weak self] products in
                 self?.products = products
+            })
+            .store(in: &cancellables)
+    }
+    
+    func fetchProductPage(limit: Int = 30, skip: Int = 0) {
+        productService.fetchProductPage(limit: limit, skip: skip)
+            .receive(on: DispatchQueue.main)
+            .sink(receiveCompletion: { [weak self] completion in
+                switch completion {
+                case .finished:
+                    break
+                case .failure(let error):
+                    self?.errorMessage = error.localizedDescription
+                }
+            }, receiveValue: { [weak self] response in
+                self?.products = response.products.shuffled()
             })
             .store(in: &cancellables)
     }
