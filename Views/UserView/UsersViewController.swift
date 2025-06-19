@@ -18,6 +18,7 @@ class UsersViewController: UIViewController {
     
     private let avatarImageView: UIImageView = {
         let image = UIImageView()
+        image.image = UIImage(systemName: "person.crop.circle")
         image.layer.cornerRadius = 60
         image.clipsToBounds = true
         image.contentMode = .scaleAspectFill

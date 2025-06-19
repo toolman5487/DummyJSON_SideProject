@@ -26,7 +26,7 @@ class ProductsViewController: UIViewController {
     }
     
     private func setupNavg() {
-        self.title = "商品列表"
+        self.title = "隨機商品"
         navigationController?.navigationBar.prefersLargeTitles = true
         navigationItem.largeTitleDisplayMode = .always
         let refreshItem = UIBarButtonItem(barButtonSystemItem: .refresh, target: self, action: #selector(refreshTable))
@@ -39,7 +39,7 @@ class ProductsViewController: UIViewController {
     }
     
     @objc private func handleRefresh() {
-        let offsetPoint = CGPoint(x: 0, y: -refreshControl.frame.size.height - 40) 
+        let offsetPoint = CGPoint(x: 0, y: -refreshControl.frame.size.height - 40)
         tableView.setContentOffset(offsetPoint, animated: true)
         refreshControl.beginRefreshing()
         productVM.fetchProductPage(limit: 30, skip: 0)
@@ -75,11 +75,17 @@ extension ProductsViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return products.count
     }
+    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "ProductCell", for: indexPath) as! ProductTableViewCell
         cell.configure(with: products[indexPath.row])
         return cell
     }
     
-    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+        let selectedProduct = products[indexPath.row]
+        let detailVC = ProductDetailViewController(product: selectedProduct)
+        navigationController?.pushViewController(detailVC, animated: true)
+    }
 }
