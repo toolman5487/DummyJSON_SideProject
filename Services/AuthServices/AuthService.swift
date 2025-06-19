@@ -55,6 +55,10 @@ class AuthService: AuthServiceProtocol {
         
         let body = ["refreshToken": refreshToken, "expiresInMins": 30] as [String : Any]
         request.httpBody = try? JSONSerialization.data(withJSONObject: body)
+        let accessToken = UserDefaults.standard.string(forKey: "accessToken") ?? ""
+        let currentRefreshToken = UserDefaults.standard.string(forKey: "refreshToken") ?? ""
+        print("DEBUG: accessToken:", accessToken)
+        print("DEBUG: refreshToken:", currentRefreshToken)
         
         return URLSession.shared.dataTaskPublisher(for: request)
             .tryMap { output in
