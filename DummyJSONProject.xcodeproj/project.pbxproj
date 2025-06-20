@@ -161,6 +161,23 @@
 			path = LoginView;
 			sourceTree = "<group>";
 		};
+		153CABBB2E054D9B00EF259D /* RandomTableView */ = {
+			isa = PBXGroup;
+			children = (
+				15E872542E02E95B0038BEB7 /* ProductsViewController.swift */,
+				15E8726E2E03BDFE0038BEB7 /* ProductTableViewCell.swift */,
+			);
+			path = RandomTableView;
+			sourceTree = "<group>";
+		};
+		153CABBC2E054F9E00EF259D /* ProductDetailView */ = {
+			isa = PBXGroup;
+			children = (
+				15E872702E03E02E0038BEB7 /* ProductDetailViewController.swift */,
+			);
+			path = ProductDetailView;
+			sourceTree = "<group>";
+		};
 		15E8723A2E02C93F0038BEB7 /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
@@ -197,10 +214,9 @@
 		15E872512E02E9330038BEB7 /* ProductsView */ = {
 			isa = PBXGroup;
 			children = (
+				153CABBC2E054F9E00EF259D /* ProductDetailView */,
+				153CABBB2E054D9B00EF259D /* RandomTableView */,
 				15E872A02E03F1110038BEB7 /* ReviewView */,
-				15E872542E02E95B0038BEB7 /* ProductsViewController.swift */,
-				15E8726E2E03BDFE0038BEB7 /* ProductTableViewCell.swift */,
-				15E872702E03E02E0038BEB7 /* ProductDetailViewController.swift */,
 			);
 			path = ProductsView;
 			sourceTree = "<group>";
