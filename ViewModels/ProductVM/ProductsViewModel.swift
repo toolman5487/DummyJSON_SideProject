@@ -20,7 +20,7 @@ class ProductsViewModel {
     }
     
     func fetchProducts() {
-        productService.fetchAllProducts()
+        productService.fetchAllProductsPaginated(pageSize: 200)
             .receive(on: DispatchQueue.main)
             .sink(receiveCompletion: { [weak self] completion in
                 switch completion {
@@ -35,8 +35,11 @@ class ProductsViewModel {
             .store(in: &cancellables)
     }
     
-    func fetchProductPage(limit: Int = 30, skip: Int = 0) {
-        productService.fetchProductPage(limit: limit, skip: skip)
+    func fetchRandomProducts(count: Int) {
+        productService.fetchAllProductsPaginated(pageSize: 200)
+            .map { products in
+                Array(products.shuffled().prefix(count))
+            }
             .receive(on: DispatchQueue.main)
             .sink(receiveCompletion: { [weak self] completion in
                 switch completion {
@@ -45,9 +48,10 @@ class ProductsViewModel {
                 case .failure(let error):
                     self?.errorMessage = error.localizedDescription
                 }
-            }, receiveValue: { [weak self] response in
-                self?.products = response.products.shuffled()
+            }, receiveValue: { [weak self] randomProducts in
+                self?.products = randomProducts
             })
             .store(in: &cancellables)
     }
+    
 }

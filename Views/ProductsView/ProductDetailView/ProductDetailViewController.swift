@@ -35,7 +35,7 @@ class ProductDetailViewController: UIViewController, UICollectionViewDataSource,
     
     private let titleLabel: UILabel = {
         let label = UILabel()
-        label.font = .boldSystemFont(ofSize: 24)
+        label.font = .systemFont(ofSize: 20,weight: .semibold)
         label.numberOfLines = 0
         return label
     }()
@@ -50,7 +50,7 @@ class ProductDetailViewController: UIViewController, UICollectionViewDataSource,
     
     private let priceLabel: UILabel = {
         let label = UILabel()
-        label.font = .systemFont(ofSize: 20, weight: .semibold)
+        label.font = .systemFont(ofSize: 20, weight: .bold)
         label.textColor = .systemBlue
         return label
     }()
@@ -58,7 +58,7 @@ class ProductDetailViewController: UIViewController, UICollectionViewDataSource,
     private let stockLabel: UILabel = {
         let label = UILabel()
         label.font = .systemFont(ofSize: 16)
-        label.textColor = .label
+        label.textColor = .secondaryLabel
         return label
     }()
     
@@ -71,7 +71,7 @@ class ProductDetailViewController: UIViewController, UICollectionViewDataSource,
     
     private let warrantyLabel: UILabel = {
         let label = UILabel()
-        label.font = .systemFont(ofSize: 14)
+        label.font = .systemFont(ofSize: 16)
         label.textColor = .secondaryLabel
         label.numberOfLines = 0
         return label
@@ -79,7 +79,7 @@ class ProductDetailViewController: UIViewController, UICollectionViewDataSource,
     
     private let shippingLabel: UILabel = {
         let label = UILabel()
-        label.font = .systemFont(ofSize: 14)
+        label.font = .systemFont(ofSize: 16)
         label.textColor = .secondaryLabel
         label.numberOfLines = 0
         return label
@@ -87,7 +87,7 @@ class ProductDetailViewController: UIViewController, UICollectionViewDataSource,
     
     private let returnPolicyLabel: UILabel = {
         let label = UILabel()
-        label.font = .systemFont(ofSize: 14)
+        label.font = .systemFont(ofSize: 16)
         label.textColor = .secondaryLabel
         label.numberOfLines = 0
         return label
@@ -95,14 +95,14 @@ class ProductDetailViewController: UIViewController, UICollectionViewDataSource,
     
     private let minimumOrderLabel: UILabel = {
         let label = UILabel()
-        label.font = .systemFont(ofSize: 14)
+        label.font = .systemFont(ofSize: 16)
         label.textColor = .secondaryLabel
         return label
     }()
     
     private let barcodeLabel: UILabel = {
         let label = UILabel()
-        label.font = .systemFont(ofSize: 14)
+        label.font = .systemFont(ofSize: 16)
         label.textColor = .label
         return label
     }()
@@ -149,7 +149,14 @@ class ProductDetailViewController: UIViewController, UICollectionViewDataSource,
         self.title = "商品細項"
         navigationController?.navigationBar.prefersLargeTitles = true
         navigationItem.largeTitleDisplayMode = .always
+        let addButton = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(didTapAdd))
+        navigationItem.rightBarButtonItem = addButton
     }
+    
+    @objc private func didTapAdd() {
+        print("Add to cart tapped")
+    }
+
     
     @objc private func showReviews() {
         let reviewVC = ReviewsViewController(reviews: product.reviews ?? [])
@@ -220,7 +227,7 @@ class ProductDetailViewController: UIViewController, UICollectionViewDataSource,
         }
         
         descriptionLabel.snp.makeConstraints { make in
-            make.top.equalTo(titleLabel.snp.bottom).offset(12)
+            make.top.equalTo(titleLabel.snp.bottom).offset(8)
             make.leading.trailing.equalToSuperview().inset(16)
         }
         
@@ -228,39 +235,39 @@ class ProductDetailViewController: UIViewController, UICollectionViewDataSource,
             make.top.equalTo(tagsCollectionView.snp.bottom).offset(12)
             make.leading.equalToSuperview().inset(16)
         }
-        
+
+        ratingLabel.snp.makeConstraints { make in
+            make.centerY.equalTo(priceLabel)
+            make.leading.equalTo(priceLabel.snp.trailing).offset(16)
+        }
+
         stockLabel.snp.makeConstraints { make in
-            make.top.equalTo(priceLabel.snp.bottom).offset(12)
+            make.top.equalTo(priceLabel.snp.bottom).offset(8)
             make.leading.equalToSuperview().inset(16)
         }
         
-        ratingLabel.snp.makeConstraints { make in
-            make.top.equalTo(stockLabel)
-            make.leading.equalTo(stockLabel.snp.trailing).offset(20)
-        }
-        
         warrantyLabel.snp.makeConstraints { make in
-            make.top.equalTo(ratingLabel.snp.bottom).offset(12)
+            make.top.equalTo(stockLabel.snp.bottom).offset(8)
             make.leading.trailing.equalToSuperview().inset(16)
         }
 
         shippingLabel.snp.makeConstraints { make in
-            make.top.equalTo(warrantyLabel.snp.bottom).offset(4)
+            make.top.equalTo(warrantyLabel.snp.bottom).offset(8)
             make.leading.trailing.equalToSuperview().inset(16)
         }
 
         returnPolicyLabel.snp.makeConstraints { make in
-            make.top.equalTo(shippingLabel.snp.bottom).offset(12)
+            make.top.equalTo(shippingLabel.snp.bottom).offset(8)
             make.leading.trailing.equalToSuperview().inset(16)
         }
 
         minimumOrderLabel.snp.makeConstraints { make in
-            make.top.equalTo(returnPolicyLabel.snp.bottom).offset(4)
+            make.top.equalTo(returnPolicyLabel.snp.bottom).offset(8)
             make.leading.trailing.equalToSuperview().inset(16)
         }
 
         barcodeLabel.snp.makeConstraints { make in
-            make.top.equalTo(minimumOrderLabel.snp.bottom).offset(12)
+            make.top.equalTo(minimumOrderLabel.snp.bottom).offset(8)
             make.leading.trailing.equalToSuperview().inset(16)
         }
 
@@ -308,7 +315,10 @@ class ProductDetailViewController: UIViewController, UICollectionViewDataSource,
         descriptionLabel.text = product.description
         priceLabel.text = String(format: "$ %.2f", product.price ?? 0)
         stockLabel.text = product.stock != nil ? "庫存：\(product.stock!)" : "庫存：無資料"
-        ratingLabel.text = String(format: "評分：%.1f ★", product.rating ?? 0)
+        let rating = product.rating ?? 0
+        let starCount = Int(rating.rounded())
+        let stars = String(repeating: "⭐️", count: starCount)
+        ratingLabel.text = stars.isEmpty ? "無評分" : stars
         tagsCollectionView.reloadData()
         
         warrantyLabel.text = "保固：\(product.warrantyInformation ?? "無")"
@@ -335,7 +345,7 @@ extension ProductDetailViewController {
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "TagCell", for: indexPath)
         let labelTag = UILabel()
-        labelTag.font = .systemFont(ofSize: 14)
+        labelTag.font = .systemFont(ofSize: 16)
         labelTag.textColor = .systemBackground
         labelTag.backgroundColor = .label
         labelTag.layer.cornerRadius = 12
@@ -354,7 +364,9 @@ extension ProductDetailViewController {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout,
                         sizeForItemAt indexPath: IndexPath) -> CGSize {
         let tag = product.tags?[indexPath.item] ?? ""
-        let width = tag.size(withAttributes: [.font: UIFont.systemFont(ofSize: 14)]).width + 16
+        let width = tag.size(withAttributes: [.font: UIFont.systemFont(ofSize: 16)]).width + 16
         return CGSize(width: width, height: 30)
     }
 }
+
+   

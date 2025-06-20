@@ -16,33 +16,41 @@ class ProductsViewController: UIViewController {
     private let productVM = ProductsViewModel()
     private var products: [ProductModel] = []
     private var cancellables = Set<AnyCancellable>()
+    private let searchController = UISearchController(searchResultsController: nil)
     
     override func viewDidLoad() {
         super.viewDidLoad()
         setupNavg()
+        setupSearchController()
         setupTableView()
         bindViewModel()
         productVM.fetchProducts()
     }
     
     private func setupNavg() {
-        self.title = "隨機商品"
+        self.title = "首頁"
         navigationController?.navigationBar.prefersLargeTitles = true
         navigationItem.largeTitleDisplayMode = .always
-        let refreshItem = UIBarButtonItem(barButtonSystemItem: .refresh, target: self, action: #selector(refreshTable))
-        refreshItem.tintColor = .systemBackground
-        navigationItem.rightBarButtonItem = refreshItem
     }
     
-    @objc private func refreshTable() {
-        productVM.fetchProductPage(limit: 30, skip: 0)
+    private func setupSearchController() {
+        searchController.searchResultsUpdater = self
+        searchController.obscuresBackgroundDuringPresentation = false
+        searchController.searchBar.placeholder = "搜尋商品"
+        navigationItem.searchController = searchController
+        definesPresentationContext = true
+        
+        searchController.searchBar.barStyle = .black
+        searchController.searchBar.searchTextField.backgroundColor = .systemBackground
+        searchController.searchBar.searchTextField.textColor = .label
+        searchController.searchBar.searchTextField.tintColor = .label
     }
     
     @objc private func handleRefresh() {
         let offsetPoint = CGPoint(x: 0, y: -refreshControl.frame.size.height - 40)
         tableView.setContentOffset(offsetPoint, animated: true)
         refreshControl.beginRefreshing()
-        productVM.fetchProductPage(limit: 30, skip: 0)
+        productVM.fetchProducts()
     }
     
     private func setupTableView() {
@@ -87,5 +95,21 @@ extension ProductsViewController: UITableViewDataSource, UITableViewDelegate {
         let selectedProduct = products[indexPath.row]
         let detailVC = ProductDetailViewController(product: selectedProduct)
         navigationController?.pushViewController(detailVC, animated: true)
+    }
+}
+
+extension ProductsViewController: UISearchResultsUpdating {
+    
+    func updateSearchResults(for searchController: UISearchController) {
+        guard let query = searchController.searchBar.text, !query.isEmpty else {
+            products = productVM.products
+            tableView.reloadData()
+            return
+        }
+        products = productVM.products.filter {
+            $0.title.localizedCaseInsensitiveContains(query) ||
+            ($0.tags?.contains(where: { $0.localizedCaseInsensitiveContains(query) }) ?? false)
+        }
+        tableView.reloadData()
     }
 }

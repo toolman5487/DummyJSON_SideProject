@@ -17,10 +17,10 @@ class MainTabBarController:UITabBarController{
     
     func mainTabBar(){
         let productsVC = ProductsViewController()
-        productsVC.tabBarItem = UITabBarItem(title: "產品", image: UIImage(systemName: "cart.fill"), tag: 0)
+        productsVC.tabBarItem = UITabBarItem(title: "首頁", image: UIImage(systemName: "house.fill"), tag: 0)
 
-        let todoListVC = CategoryViewController()
-        todoListVC.tabBarItem = UITabBarItem(title: "分類", image: UIImage(systemName: "checklist"), tag: 1)
+        let todoListVC = CartHomeViewController()
+        todoListVC.tabBarItem = UITabBarItem(title: "購物車", image: UIImage(systemName: "cart.fill"), tag: 1)
         
         let usersVC = UsersViewController()
         usersVC.tabBarItem = UITabBarItem(title: "使用者", image: UIImage(systemName: "person.2.fill"), tag: 2)

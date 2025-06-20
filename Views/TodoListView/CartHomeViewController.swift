@@ -8,7 +8,7 @@
 import Foundation
 import UIKit
 
-class CategoryViewController:UIViewController{
+class CartHomeViewController:UIViewController{
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -16,7 +16,7 @@ class CategoryViewController:UIViewController{
     }
     
     private func setupTodoTitle() {
-        self.title = "商品分類"
+        self.title = "購物車"
         navigationController?.navigationBar.prefersLargeTitles = true
         navigationItem.largeTitleDisplayMode = .always
     }
