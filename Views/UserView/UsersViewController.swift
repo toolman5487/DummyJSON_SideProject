@@ -15,6 +15,13 @@ class UsersViewController: UIViewController {
     private let userVM = UsersViewModel(authService: AuthService())
     private var cancellables = Set<AnyCancellable>()
     
+    private let tableView = UITableView(frame: .zero, style: .insetGrouped)
+    
+    private enum Section: Int, CaseIterable {
+        case basicInfo, contact, address, company
+    }
+
+    private var userInfo: UserModel?
     
     private let avatarImageView: UIImageView = {
         let image = UIImageView()
@@ -22,32 +29,9 @@ class UsersViewController: UIViewController {
         image.layer.cornerRadius = 60
         image.clipsToBounds = true
         image.contentMode = .scaleAspectFill
-        image.layer.borderWidth = 3
-        image.layer.borderColor = UIColor.label.cgColor
+        image.layer.borderWidth = 0
+        image.layer.borderColor = nil
         return image
-    }()
-    
-    private let usernameLabel: UILabel = {
-        let label = UILabel()
-        label.font = UIFont.boldSystemFont(ofSize: 24)
-        label.textAlignment = .center
-        return label
-    }()
-    
-    private let emailLabel: UILabel = {
-        let label = UILabel()
-        label.font = UIFont.systemFont(ofSize: 16)
-        label.textAlignment = .center
-        label.textColor = .secondaryLabel
-        return label
-    }()
-    
-    private let fullNameLabel: UILabel = {
-        let label = UILabel()
-        label.font = UIFont.systemFont(ofSize: 16)
-        label.textAlignment = .center
-        label.textColor = .secondaryLabel
-        return label
     }()
     
     private let logoutButton: UIButton = {
@@ -64,6 +48,7 @@ class UsersViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUsersTitle()
+        setupTableView()
         setupUI()
         bindingVM()
         loadUser()
@@ -77,33 +62,27 @@ class UsersViewController: UIViewController {
         view.backgroundColor = .systemBackground
     }
     
+    private func setupTableView() {
+        view.addSubview(tableView)
+        tableView.snp.makeConstraints { make in
+            make.top.left.right.bottom.equalToSuperview()
+        }
+        tableView.dataSource = self
+        tableView.delegate = self
+        tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
+    }
+    
     private func setupUI() {
-        view.addSubview(avatarImageView)
-        view.addSubview(usernameLabel)
-        view.addSubview(emailLabel)
-        view.addSubview(fullNameLabel)
-        
+        let avatarContainerView = UIView(frame: CGRect(x: 0, y: 0, width: view.bounds.width, height: 160))
+        avatarContainerView.addSubview(avatarImageView)
+
         avatarImageView.snp.makeConstraints { make in
-            make.top.equalTo(view.safeAreaLayoutGuide).offset(40)
-            make.centerX.equalToSuperview()
+            make.center.equalToSuperview()
             make.width.height.equalTo(120)
         }
-        
-        usernameLabel.snp.makeConstraints { make in
-            make.top.equalTo(avatarImageView.snp.bottom).offset(20)
-            make.left.right.equalToSuperview().inset(20)
-        }
-        
-        fullNameLabel.snp.makeConstraints { make in
-            make.top.equalTo(usernameLabel.snp.bottom).offset(8)
-            make.left.right.equalToSuperview().inset(20)
-        }
-        
-        emailLabel.snp.makeConstraints { make in
-            make.top.equalTo(fullNameLabel.snp.bottom).offset(8)
-            make.left.right.equalToSuperview().inset(20)
-        }
-        
+
+        tableView.tableHeaderView = avatarContainerView
+
         view.addSubview(logoutButton)
         logoutButton.snp.makeConstraints { make in
             make.left.right.equalToSuperview().inset(32)
@@ -136,17 +115,14 @@ class UsersViewController: UIViewController {
     }
     
     private func configUI(with user: UserModel) {
-        usernameLabel.text = (user.username.isEmpty == false) ? user.username : "未設定用戶名稱"
-        let firstName = user.firstName ?? ""
-        let lastName = user.lastName ?? ""
-        let fullName = [firstName, lastName].filter { !$0.isEmpty }.joined(separator: " ")
-        fullNameLabel.text = !fullName.isEmpty ? fullName : "未設定姓名"
-        emailLabel.text = (user.email?.isEmpty == false) ? user.email : "未設定 Email"
-        if let urlString = user.image, !urlString.isEmpty, let url = URL(string: urlString) {
+        let urlString = user.image
+        if !urlString.isEmpty, let url = URL(string: urlString) {
             avatarImageView.sd_setImage(with: url, placeholderImage: UIImage(systemName: "person.crop.circle"))
         } else {
             avatarImageView.image = UIImage(systemName: "person.crop.circle")
         }
+        self.userInfo = user
+        self.tableView.reloadData()
     }
     
     private func setupLogoutButton() {
@@ -165,5 +141,74 @@ class UsersViewController: UIViewController {
             window.rootViewController = nav
             window.makeKeyAndVisible()
         }
+    }
+}
+
+extension UsersViewController: UITableViewDataSource, UITableViewDelegate {
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return Section.allCases.count
+    }
+
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        guard let section = Section(rawValue: section) else { return 0 }
+        switch section {
+        case .basicInfo:
+            return 2
+        case .contact:
+            return 2
+        case .address:
+            return 2
+        case .company:
+            return 2
+        }
+    }
+
+    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        guard let section = Section(rawValue: section) else { return nil }
+        switch section {
+        case .basicInfo: return "基本資料"
+        case .contact: return "聯絡方式"
+        case .address: return "住址"
+        case .company: return "公司資訊"
+        }
+    }
+
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
+        guard let user = userInfo,
+              let section = Section(rawValue: indexPath.section) else {
+            cell.textLabel?.text = "資料錯誤"
+            return cell
+        }
+
+        switch section {
+        case .basicInfo:
+            if indexPath.row == 0 {
+                cell.textLabel?.text = "用戶名稱：\(user.username)"
+            } else {
+                let fullName = [user.firstName ?? "", user.lastName ?? ""].joined(separator: " ")
+                cell.textLabel?.text = "姓名：\(fullName)"
+            }
+        case .contact:
+            if indexPath.row == 0 {
+                cell.textLabel?.text = "Email：\(user.email ?? "無")"
+            } else {
+                cell.textLabel?.text = "電話：\(user.phone ?? "無")"
+            }
+        case .address:
+            if indexPath.row == 0 {
+                cell.textLabel?.text = "地址：\(user.address?.address ?? "") \(user.address?.city ?? "")"
+            } else {
+                cell.textLabel?.text = "國家：\(user.address?.country ?? "")"
+            }
+        case .company:
+            if indexPath.row == 0 {
+                cell.textLabel?.text = "公司名稱：\(user.company?.name ?? "")"
+            } else {
+                cell.textLabel?.text = "職稱：\(user.company?.title ?? "")"
+            }
+        }
+
+        return cell
     }
 }
