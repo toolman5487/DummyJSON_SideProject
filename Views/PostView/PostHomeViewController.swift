@@ -6,9 +6,18 @@
 //
 
 import UIKit
+import Combine
 import SnapKit
 
 class PostHomeViewController: UIViewController {
+    
+    private let postVM: PostViewModel
+    private var cancellables = Set<AnyCancellable>()
+    init(viewModel: PostViewModel) {
+        self.postVM = viewModel
+        super.init(nibName: nil, bundle: nil)
+    }
+    required init?(coder: NSCoder) {fatalError("init(coder:) has not been implemented")}
     
     private var postInputContainer: UIView?
     
@@ -46,6 +55,8 @@ class PostHomeViewController: UIViewController {
         view.backgroundColor = .systemGroupedBackground
         setupTodoTitle()
         setupLayout()
+        bindingVM()
+        postVM.fetchInitialPosts()
     }
     
     private func setupTodoTitle() {
@@ -100,19 +111,29 @@ class PostHomeViewController: UIViewController {
     @objc private func didTapInput() {
         print("點擊發文輸入框")
     }
+    
+    private func bindingVM(){
+        postVM.$posts
+            .receive(on: DispatchQueue.main)
+            .sink {[weak self] _ in
+                self?.tableView.reloadData()
+            }
+            .store(in: &cancellables)
+    }
 }
 
 extension PostHomeViewController: UITableViewDelegate,UITableViewDataSource{
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 20
+        return postVM.posts.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "PostTableViewCell")
-            ?? UITableViewCell(style: .subtitle, reuseIdentifier: "PostTableViewCell")
-        cell.textLabel?.text = "\(indexPath.row + 1) Title"
-        cell.detailTextLabel?.text = "Detail"
+        ?? UITableViewCell(style: .subtitle, reuseIdentifier: "PostTableViewCell")
+        let post = postVM.posts[indexPath.row]
+        cell.textLabel?.text = post.title
+        cell.detailTextLabel?.text = post.body
         cell.detailTextLabel?.textColor = .secondaryLabel
         return cell
     }

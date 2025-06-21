@@ -14,8 +14,6 @@ protocol PostServiceProtocol {
 }
 
 class PostService: PostServiceProtocol {
-    static let shared = PostService()
-    private init() {}
     
     func fetchPosts(limit: Int = 30, skip: Int = 0) -> AnyPublisher<PostModel, Error> {
         var components = URLComponents(url: APIConfig.baseURL.appendingPathComponent("posts"), resolvingAgainstBaseURL: false)
