@@ -20,7 +20,7 @@ class UsersViewController: UIViewController {
     private enum Section: Int, CaseIterable {
         case basicInfo, contact, address, company
     }
-
+    
     private var userInfo: UserModel?
     
     private let avatarImageView: UIImageView = {
@@ -75,20 +75,13 @@ class UsersViewController: UIViewController {
     private func setupUI() {
         let avatarContainerView = UIView(frame: CGRect(x: 0, y: 0, width: view.bounds.width, height: 160))
         avatarContainerView.addSubview(avatarImageView)
-
+        
         avatarImageView.snp.makeConstraints { make in
             make.center.equalToSuperview()
             make.width.height.equalTo(120)
         }
-
+        
         tableView.tableHeaderView = avatarContainerView
-
-        view.addSubview(logoutButton)
-        logoutButton.snp.makeConstraints { make in
-            make.left.right.equalToSuperview().inset(32)
-            make.bottom.equalTo(view.safeAreaLayoutGuide).inset(24)
-            make.height.equalTo(44)
-        }
     }
     
     private func bindingVM(){
@@ -146,10 +139,13 @@ class UsersViewController: UIViewController {
 
 extension UsersViewController: UITableViewDataSource, UITableViewDelegate {
     func numberOfSections(in tableView: UITableView) -> Int {
-        return Section.allCases.count
+        return Section.allCases.count + 1
     }
-
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        if section == Section.allCases.count {
+            return 1
+        }
         guard let section = Section(rawValue: section) else { return 0 }
         switch section {
         case .basicInfo:
@@ -162,8 +158,11 @@ extension UsersViewController: UITableViewDataSource, UITableViewDelegate {
             return 2
         }
     }
-
+    
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        if section == Section.allCases.count {
+            return nil
+        }
         guard let section = Section(rawValue: section) else { return nil }
         switch section {
         case .basicInfo: return "基本資料"
@@ -172,15 +171,26 @@ extension UsersViewController: UITableViewDataSource, UITableViewDelegate {
         case .company: return "公司資訊"
         }
     }
-
+    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
-        guard let user = userInfo,
-              let section = Section(rawValue: indexPath.section) else {
+        cell.textLabel?.textAlignment = .left
+        cell.textLabel?.textColor = .label
+        cell.selectionStyle = .none
+        
+        if indexPath.section == Section.allCases.count {
+            cell.textLabel?.text = "登出"
+            cell.textLabel?.textAlignment = .center
+            cell.textLabel?.textColor = .systemRed
+            cell.selectionStyle = .default
+            return cell
+        }
+        
+        guard let section = Section(rawValue: indexPath.section), let user = userInfo else {
             cell.textLabel?.text = "資料錯誤"
             return cell
         }
-
+        
         switch section {
         case .basicInfo:
             if indexPath.row == 0 {
@@ -191,9 +201,9 @@ extension UsersViewController: UITableViewDataSource, UITableViewDelegate {
             }
         case .contact:
             if indexPath.row == 0 {
-                cell.textLabel?.text = "Email：\(user.email ?? "無")"
+                cell.textLabel?.text = "Email：\(user.email)"
             } else {
-                cell.textLabel?.text = "電話：\(user.phone ?? "無")"
+                cell.textLabel?.text = "電話：\(user.phone)"
             }
         case .address:
             if indexPath.row == 0 {
@@ -208,7 +218,13 @@ extension UsersViewController: UITableViewDataSource, UITableViewDelegate {
                 cell.textLabel?.text = "職稱：\(user.company?.title ?? "")"
             }
         }
-
         return cell
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        if indexPath.section == Section.allCases.count {
+            handleLogout()
+        }
+        tableView.deselectRow(at: indexPath, animated: true)
     }
 }
