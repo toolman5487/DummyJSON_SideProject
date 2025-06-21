@@ -14,6 +14,7 @@
 		153CABBE2E05A74100EF259D /* CartManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 153CABBD2E05A74100EF259D /* CartManager.swift */; };
 		153CABC12E05A78F00EF259D /* CartItemModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 153CABC02E05A78F00EF259D /* CartItemModel.swift */; };
 		153CABC52E06960B00EF259D /* PostModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 153CABC42E06960B00EF259D /* PostModel.swift */; };
+		153CABC82E06DD4A00EF259D /* PostListService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 153CABC72E06DD4A00EF259D /* PostListService.swift */; };
 		15E8723C2E02C98C0038BEB7 /* APIConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15E8723B2E02C98C0038BEB7 /* APIConfig.swift */; };
 		15E8723F2E02CA7D0038BEB7 /* AuthModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15E8723E2E02CA7D0038BEB7 /* AuthModel.swift */; };
 		15E872422E02DF850038BEB7 /* AuthService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15E872412E02DF850038BEB7 /* AuthService.swift */; };
@@ -42,6 +43,7 @@
 		153CABBD2E05A74100EF259D /* CartManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CartManager.swift; sourceTree = "<group>"; };
 		153CABC02E05A78F00EF259D /* CartItemModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CartItemModel.swift; sourceTree = "<group>"; };
 		153CABC42E06960B00EF259D /* PostModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostModel.swift; sourceTree = "<group>"; };
+		153CABC72E06DD4A00EF259D /* PostListService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostListService.swift; sourceTree = "<group>"; };
 		15E8723B2E02C98C0038BEB7 /* APIConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIConfig.swift; sourceTree = "<group>"; };
 		15E8723E2E02CA7D0038BEB7 /* AuthModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthModel.swift; sourceTree = "<group>"; };
 		15E872412E02DF850038BEB7 /* AuthService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthService.swift; sourceTree = "<group>"; };
@@ -134,6 +136,7 @@
 		1539EF3C2E02B9D000ABE12E /* ViewModels */ = {
 			isa = PBXGroup;
 			children = (
+				153CABC92E06EAC100EF259D /* New Group */,
 				15E872692E03B4F60038BEB7 /* ProductVM */,
 				15E8725D2E02F6BD0038BEB7 /* UserVM */,
 				15E872492E02E33D0038BEB7 /* AuthVM */,
@@ -155,6 +158,7 @@
 		1539EF3E2E02B9DE00ABE12E /* Services */ = {
 			isa = PBXGroup;
 			children = (
+				153CABC62E06DD2D00EF259D /* PostServices */,
 				15E872662E03B1D40038BEB7 /* ProductServices */,
 				15E872402E02DF740038BEB7 /* AuthServices */,
 			);
@@ -200,6 +204,21 @@
 				153CABC42E06960B00EF259D /* PostModel.swift */,
 			);
 			path = PostModels;
+			sourceTree = "<group>";
+		};
+		153CABC62E06DD2D00EF259D /* PostServices */ = {
+			isa = PBXGroup;
+			children = (
+				153CABC72E06DD4A00EF259D /* PostListService.swift */,
+			);
+			path = PostServices;
+			sourceTree = "<group>";
+		};
+		153CABC92E06EAC100EF259D /* New Group */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = "New Group";
 			sourceTree = "<group>";
 		};
 		15E8723A2E02C93F0038BEB7 /* Controllers */ = {
@@ -415,6 +434,7 @@
 				15E8725C2E02F5180038BEB7 /* UserModel.swift in Sources */,
 				15E872552E02E95B0038BEB7 /* ProductsViewController.swift in Sources */,
 				15E8726D2E03B6E00038BEB7 /* ProductDetailViewModel.swift in Sources */,
+				153CABC82E06DD4A00EF259D /* PostListService.swift in Sources */,
 				15E8724B2E02E3510038BEB7 /* AuthViewModel.swift in Sources */,
 				15E8723C2E02C98C0038BEB7 /* APIConfig.swift in Sources */,
 				153CABC12E05A78F00EF259D /* CartItemModel.swift in Sources */,
