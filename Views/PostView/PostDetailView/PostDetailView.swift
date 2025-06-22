@@ -30,6 +30,23 @@ class PostDetailView: UIViewController{
         return label
     }()
     
+    private var tags: [String] = ["swift", "combine", "mvvm", "uikit", "sdwebimage", "snapkit", "api", "json", "ios", "apple"]
+    private lazy var tagsCollectionView: UICollectionView = {
+        let layout = UICollectionViewFlowLayout()
+        layout.scrollDirection = .horizontal
+        layout.minimumInteritemSpacing = 16
+        layout.sectionInset = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
+        layout.estimatedItemSize = CGSize(width: 60, height: 30)
+        
+        let collection = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        collection.backgroundColor = .clear
+        collection.showsHorizontalScrollIndicator = false
+        collection.dataSource = self
+        collection.delegate = self
+        collection.register(TagCollectionViewCell.self, forCellWithReuseIdentifier: TagCollectionViewCell.reuseIdentifier)
+        return collection
+    }()
+    
     private let bodyLabel: UILabel = {
         let label = UILabel()
         label.font = .systemFont(ofSize: 16)
@@ -61,12 +78,14 @@ class PostDetailView: UIViewController{
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
+        navigationController?.navigationBar.prefersLargeTitles = false
         setupUI()
         bindingViewModel()
     }
     
     private func setupUI(){
         view.addSubview(titleLabel)
+        view.addSubview(tagsCollectionView)
         view.addSubview(bodyLabel)
         view.addSubview(likesLabel)
         view.addSubview(dislikesLabel)
@@ -76,8 +95,13 @@ class PostDetailView: UIViewController{
             make.top.equalTo(view.safeAreaLayoutGuide.snp.top).offset(16)
             make.left.right.equalToSuperview().inset(8)
         }
-        bodyLabel.snp.makeConstraints { make in
+        tagsCollectionView.snp.makeConstraints { make in
             make.top.equalTo(titleLabel.snp.bottom).offset(12)
+            make.left.right.equalToSuperview().inset(8)
+            make.height.equalTo(36)
+        }
+        bodyLabel.snp.makeConstraints { make in
+            make.top.equalTo(tagsCollectionView.snp.bottom).offset(12)
             make.left.right.equalToSuperview().inset(8)
         }
         likesLabel.snp.makeConstraints { make in
@@ -107,9 +131,24 @@ class PostDetailView: UIViewController{
                 self?.likesLabel.text = "Likes: \(post.reactions.likes)"
                 self?.dislikesLabel.text = "Dislikes: \(post.reactions.dislikes)"
                 self?.viewsLabel.text = "Views: \(post.views)"
-                self?.navigationItem.title = "User \(post.userId) 的文章"
+                self?.navigationItem.title = "User \(post.userId)"
             }
             .store(in: &cancellables)
     }
+    
+}
+
+extension PostDetailView:UICollectionViewDelegate, UICollectionViewDataSource {
+    
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return tags.count
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: TagCollectionViewCell.reuseIdentifier, for: indexPath) as! TagCollectionViewCell
+        cell.configure(with: tags[indexPath.item])
+        return cell
+    }
+    
     
 }

@@ -13,6 +13,7 @@
 		1520390B2E07EF3C0062CE5D /* PostDetailModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1520390A2E07EF3C0062CE5D /* PostDetailModel.swift */; };
 		1520390D2E07EFF80062CE5D /* PostDetailService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1520390C2E07EFF80062CE5D /* PostDetailService.swift */; };
 		1520390F2E07F0E40062CE5D /* PostDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1520390E2E07F0E40062CE5D /* PostDetailViewModel.swift */; };
+		152039122E0847AB0062CE5D /* TagCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 152039112E0847AB0062CE5D /* TagCollectionViewCell.swift */; };
 		1523AE6D2E03F1540025D5FF /* ReviewTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1523AE6C2E03F1540025D5FF /* ReviewTableViewCell.swift */; };
 		1539EF412E02BA4700ABE12E /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1539EF402E02BA4700ABE12E /* LoginViewController.swift */; };
 		1539EF442E02BCC400ABE12E /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 1539EF432E02BCC400ABE12E /* SnapKit */; };
@@ -49,6 +50,7 @@
 		1520390A2E07EF3C0062CE5D /* PostDetailModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostDetailModel.swift; sourceTree = "<group>"; };
 		1520390C2E07EFF80062CE5D /* PostDetailService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostDetailService.swift; sourceTree = "<group>"; };
 		1520390E2E07F0E40062CE5D /* PostDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostDetailViewModel.swift; sourceTree = "<group>"; };
+		152039112E0847AB0062CE5D /* TagCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagCollectionViewCell.swift; sourceTree = "<group>"; };
 		1523AE6C2E03F1540025D5FF /* ReviewTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewTableViewCell.swift; sourceTree = "<group>"; };
 		1539EF232E02B99400ABE12E /* DummyJSONProject.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DummyJSONProject.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1539EF402E02BA4700ABE12E /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
@@ -118,6 +120,15 @@
 				1520390E2E07F0E40062CE5D /* PostDetailViewModel.swift */,
 			);
 			path = PostVM;
+			sourceTree = "<group>";
+		};
+		152039102E08478B0062CE5D /* PostDetailView */ = {
+			isa = PBXGroup;
+			children = (
+				152039082E07EDC50062CE5D /* PostDetailView.swift */,
+				152039112E0847AB0062CE5D /* TagCollectionViewCell.swift */,
+			);
+			path = PostDetailView;
 			sourceTree = "<group>";
 		};
 		1539EF1A2E02B99400ABE12E = {
@@ -291,9 +302,9 @@
 		15E872532E02E94A0038BEB7 /* PostView */ = {
 			isa = PBXGroup;
 			children = (
+				152039102E08478B0062CE5D /* PostDetailView */,
 				15E872582E02E9A40038BEB7 /* PostHomeViewController.swift */,
 				152039062E07DCB40062CE5D /* PostTableViewCell.swift */,
-				152039082E07EDC50062CE5D /* PostDetailView.swift */,
 			);
 			path = PostView;
 			sourceTree = "<group>";
@@ -449,6 +460,7 @@
 				152039052E06F3F50062CE5D /* PostViewModel.swift in Sources */,
 				153CABC52E06960B00EF259D /* PostModel.swift in Sources */,
 				1539EF412E02BA4700ABE12E /* LoginViewController.swift in Sources */,
+				152039122E0847AB0062CE5D /* TagCollectionViewCell.swift in Sources */,
 				15E872502E02E7690038BEB7 /* MainTabBarController.swift in Sources */,
 				1520390B2E07EF3C0062CE5D /* PostDetailModel.swift in Sources */,
 				15E872572E02E9780038BEB7 /* UsersViewController.swift in Sources */,
