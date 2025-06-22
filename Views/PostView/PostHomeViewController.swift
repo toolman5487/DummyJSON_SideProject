@@ -106,6 +106,7 @@ class PostHomeViewController: UIViewController {
             make.top.equalTo(container.snp.bottom).offset(8)
             make.left.right.bottom.equalToSuperview()
         }
+        tableView.register(PostTableViewCell.self, forCellReuseIdentifier: "PostTableViewCell")
     }
     
     @objc private func didTapInput() {
@@ -124,22 +125,28 @@ class PostHomeViewController: UIViewController {
 
 extension PostHomeViewController: UITableViewDelegate,UITableViewDataSource{
     
+    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        return "貼文"
+    }
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return postVM.posts.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "PostTableViewCell")
-        ?? UITableViewCell(style: .subtitle, reuseIdentifier: "PostTableViewCell")
+        if let cell = tableView.dequeueReusableCell(withIdentifier: "PostTableViewCell", for: indexPath) as? PostTableViewCell {
+            let post = postVM.posts[indexPath.row]
+            cell.configure(with: post)
+            return cell
+        }
+        return UITableViewCell()
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let post = postVM.posts[indexPath.row]
-        cell.textLabel?.text = post.title
-        cell.detailTextLabel?.text = post.body
-        cell.detailTextLabel?.textColor = .secondaryLabel
-        return cell
+        let detailService = PostDetailService()
+        let detailVM = PostDetailViewModel(postId: post.id, service: detailService)
+        let detailVC = PostDetailView(viewModel: detailVM)
+        navigationController?.pushViewController(detailVC, animated: true)
     }
-    
-    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return "貼文"
-    }
-    
 }
