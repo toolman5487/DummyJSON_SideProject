@@ -15,6 +15,7 @@
 		1520390F2E07F0E40062CE5D /* PostDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1520390E2E07F0E40062CE5D /* PostDetailViewModel.swift */; };
 		152039142E08FE240062CE5D /* TagPillCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 152039132E08FE240062CE5D /* TagPillCell.swift */; };
 		1523AE6D2E03F1540025D5FF /* ReviewTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1523AE6C2E03F1540025D5FF /* ReviewTableViewCell.swift */; };
+		15279CF12E09014400CF15ED /* TagPillCarouselView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15279CF02E09014400CF15ED /* TagPillCarouselView.swift */; };
 		1539EF412E02BA4700ABE12E /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1539EF402E02BA4700ABE12E /* LoginViewController.swift */; };
 		1539EF442E02BCC400ABE12E /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 1539EF432E02BCC400ABE12E /* SnapKit */; };
 		1539EF472E02BCD800ABE12E /* SDWebImage in Frameworks */ = {isa = PBXBuildFile; productRef = 1539EF462E02BCD800ABE12E /* SDWebImage */; };
@@ -52,6 +53,7 @@
 		1520390E2E07F0E40062CE5D /* PostDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostDetailViewModel.swift; sourceTree = "<group>"; };
 		152039132E08FE240062CE5D /* TagPillCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagPillCell.swift; sourceTree = "<group>"; };
 		1523AE6C2E03F1540025D5FF /* ReviewTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewTableViewCell.swift; sourceTree = "<group>"; };
+		15279CF02E09014400CF15ED /* TagPillCarouselView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagPillCarouselView.swift; sourceTree = "<group>"; };
 		1539EF232E02B99400ABE12E /* DummyJSONProject.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DummyJSONProject.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1539EF402E02BA4700ABE12E /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		153CABBD2E05A74100EF259D /* CartManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CartManager.swift; sourceTree = "<group>"; };
@@ -127,6 +129,7 @@
 			children = (
 				152039082E07EDC50062CE5D /* PostDetailView.swift */,
 				152039132E08FE240062CE5D /* TagPillCell.swift */,
+				15279CF02E09014400CF15ED /* TagPillCarouselView.swift */,
 			);
 			path = PostDetailView;
 			sourceTree = "<group>";
@@ -464,6 +467,7 @@
 				1520390B2E07EF3C0062CE5D /* PostDetailModel.swift in Sources */,
 				15E872572E02E9780038BEB7 /* UsersViewController.swift in Sources */,
 				15E872682E03B1EC0038BEB7 /* ProductService.swift in Sources */,
+				15279CF12E09014400CF15ED /* TagPillCarouselView.swift in Sources */,
 				15E8725C2E02F5180038BEB7 /* UserModel.swift in Sources */,
 				15E872552E02E95B0038BEB7 /* ProductsViewController.swift in Sources */,
 				15E8726D2E03B6E00038BEB7 /* ProductDetailViewModel.swift in Sources */,

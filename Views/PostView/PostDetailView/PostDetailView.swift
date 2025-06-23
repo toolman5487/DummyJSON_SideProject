@@ -30,11 +30,33 @@ class PostDetailView: UIViewController{
         return label
     }()
     
+    private lazy var tagCarousel: TagPillCarouselView = {
+        let tags: [String] = []
+        let view = TagPillCarouselView(tags: tags)
+        return view
+    }()
+    
+    private let bodyContainerView: UIView = {
+        let view = UIView()
+        view.backgroundColor = UIColor.secondarySystemBackground
+        view.layer.cornerRadius = 16
+        view.layer.masksToBounds = true
+        return view
+    }()
+    
     private let bodyLabel: UILabel = {
         let label = UILabel()
         label.font = .systemFont(ofSize: 16)
         label.numberOfLines = 0
         return label
+    }()
+    
+    private let statsContainerView: UIView = {
+        let view = UIView()
+        view.backgroundColor = UIColor.secondarySystemFill
+        view.layer.cornerRadius = 12
+        view.layer.masksToBounds = true
+        return view
     }()
     
     private let likesLabel: UILabel = {
@@ -58,6 +80,14 @@ class PostDetailView: UIViewController{
         return label
     }()
     
+    private lazy var statsStackView: UIStackView = {
+        let stackView = UIStackView(arrangedSubviews: [likesLabel, dislikesLabel, viewsLabel])
+        stackView.axis = .horizontal
+        stackView.spacing = 16
+        stackView.alignment = .center
+        return stackView
+    }()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
@@ -68,30 +98,36 @@ class PostDetailView: UIViewController{
     
     private func setupUI(){
         view.addSubview(titleLabel)
-        view.addSubview(bodyLabel)
-        view.addSubview(likesLabel)
-        view.addSubview(dislikesLabel)
-        view.addSubview(viewsLabel)
+        view.addSubview(tagCarousel)
+        view.addSubview(statsContainerView)
+        view.addSubview(bodyContainerView)
+        bodyContainerView.addSubview(bodyLabel)
+        statsContainerView.addSubview(statsStackView)
         
         titleLabel.snp.makeConstraints { make in
             make.top.equalTo(view.safeAreaLayoutGuide.snp.top).offset(16)
-            make.left.right.equalToSuperview().inset(8)
+            make.leading.trailing.equalToSuperview().inset(8)
+        }
+        tagCarousel.snp.makeConstraints { make in
+            make.top.equalTo(titleLabel.snp.bottom)
+            make.leading.trailing.equalToSuperview().inset(8)
+            make.height.equalTo(40)
+        }
+        statsContainerView.snp.makeConstraints { make in
+            make.top.equalTo(tagCarousel.snp.bottom).offset(12)
+            make.leading.equalToSuperview().offset(8)
+            make.height.equalTo(32)
+        }
+        bodyContainerView.snp.makeConstraints { make in
+            make.top.equalTo(statsContainerView.snp.bottom).offset(12)
+            make.leading.trailing.equalToSuperview().inset(8)
         }
         bodyLabel.snp.makeConstraints { make in
-            make.top.equalTo(titleLabel.snp.bottom).offset(12)
-            make.left.right.equalToSuperview().inset(8)
+            make.top.bottom.equalToSuperview().inset(12)
+            make.leading.trailing.equalToSuperview().inset(12)
         }
-        likesLabel.snp.makeConstraints { make in
-            make.top.equalTo(bodyLabel.snp.bottom).offset(12)
-            make.left.equalToSuperview().offset(20)
-        }
-        dislikesLabel.snp.makeConstraints { make in
-            make.centerY.equalTo(likesLabel)
-            make.left.equalTo(likesLabel.snp.right).offset(16)
-        }
-        viewsLabel.snp.makeConstraints { make in
-            make.top.equalTo(likesLabel.snp.bottom).offset(12)
-            make.left.equalToSuperview().offset(20)
+        statsStackView.snp.makeConstraints { make in
+            make.edges.equalToSuperview().inset(8)
         }
         
     }
@@ -100,15 +136,36 @@ class PostDetailView: UIViewController{
         postDetailVM.fetchDetail()
         
         postDetailVM.$postDetail
-            .compactMap { $0 }
             .receive(on: DispatchQueue.main)
             .sink { [weak self] post in
+                guard let post = post else { return }
                 self?.titleLabel.text = post.title
                 self?.bodyLabel.text = post.body
-                self?.likesLabel.text = "Likes: \(post.reactions.likes)"
-                self?.dislikesLabel.text = "Dislikes: \(post.reactions.dislikes)"
-                self?.viewsLabel.text = "Views: \(post.views)"
+
+                let likeAttachment = NSTextAttachment()
+                likeAttachment.image = UIImage(systemName: "hand.thumbsup.fill")?.withRenderingMode(.alwaysTemplate)
+                likeAttachment.bounds = CGRect(x: 0, y: -2, width: 14, height: 14)
+                let likeString = NSMutableAttributedString(attachment: likeAttachment)
+                likeString.append(NSAttributedString(string: " \(post.reactions.likes)"))
+                self?.likesLabel.attributedText = likeString
+
+                let dislikeAttachment = NSTextAttachment()
+                dislikeAttachment.image = UIImage(systemName: "hand.thumbsdown.fill")?.withRenderingMode(.alwaysTemplate)
+                dislikeAttachment.bounds = CGRect(x: 0, y: -2, width: 14, height: 14)
+                let dislikeString = NSMutableAttributedString(attachment: dislikeAttachment)
+                dislikeString.append(NSAttributedString(string: " \(post.reactions.dislikes)"))
+                self?.dislikesLabel.attributedText = dislikeString
+
+                let viewAttachment = NSTextAttachment()
+                viewAttachment.image = UIImage(systemName: "book.fill")?.withRenderingMode(.alwaysTemplate)
+                viewAttachment.bounds = CGRect(x: 0, y: -2, width: 14, height: 14)
+                let viewString = NSMutableAttributedString(attachment: viewAttachment)
+                viewString.append(NSAttributedString(string: " \(post.views)"))
+                self?.viewsLabel.attributedText = viewString
+
                 self?.navigationItem.title = "User \(post.userId)"
+                self?.tagCarousel.setTags(post.tags)
+            
             }
             .store(in: &cancellables)
     }

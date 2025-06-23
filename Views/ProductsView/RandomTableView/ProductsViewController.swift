@@ -28,7 +28,7 @@ class ProductsViewController: UIViewController {
     }
     
     private func setupNavg() {
-        self.title = "首頁"
+        self.title = "購買"
         navigationController?.navigationBar.prefersLargeTitles = true
         navigationItem.largeTitleDisplayMode = .always
     }

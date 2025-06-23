@@ -11,7 +11,7 @@ import SnapKit
 class TagPillCell: UICollectionViewCell {
     private let label: UILabel = {
         let label = UILabel()
-        label.font = .systemFont(ofSize: 15, weight: .semibold)
+        label.font = .systemFont(ofSize: 12, weight: .semibold)
         label.textColor = .systemBackground
         label.backgroundColor = .label
         label.textAlignment = .center
@@ -24,7 +24,7 @@ class TagPillCell: UICollectionViewCell {
         super.init(frame: frame)
         contentView.addSubview(label)
         label.snp.makeConstraints { make in
-            make.edges.equalToSuperview().inset(UIEdgeInsets(top: 6, left: 16, bottom: 6, right: 16))
+            make.edges.equalToSuperview().inset(UIEdgeInsets(top: 8, left: 12, bottom: 8, right: 12))
         }
         contentView.backgroundColor = .clear
     }
@@ -33,6 +33,7 @@ class TagPillCell: UICollectionViewCell {
 
     override func layoutSubviews() {
         super.layoutSubviews()
+        label.layoutIfNeeded()
         label.layer.cornerRadius = label.frame.height / 2
     }
 

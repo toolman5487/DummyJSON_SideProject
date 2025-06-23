@@ -1,18 +1,27 @@
+//
+//  TagPillCarouselView.swift
+//  DummyJSONProject
+//
+//  Created by Willy Hsu on 2025/6/23.
+//
+
 import UIKit
 import SnapKit
 
-class TagCarouselView: UIView, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
-    private let tags: [String]
+class TagPillCarouselView: UIView, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
+    
+    private var tags: [String]
     private let collectionView: UICollectionView
 
     init(tags: [String]) {
         self.tags = tags
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .horizontal
-        layout.minimumLineSpacing = 12
-        layout.sectionInset = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
+        layout.minimumLineSpacing = 2
+        layout.sectionInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 16)
         self.collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         super.init(frame: .zero)
+        collectionView.contentInset.right = 80
         setupCollectionView()
         setupUI()
     }
@@ -21,7 +30,7 @@ class TagCarouselView: UIView, UICollectionViewDataSource, UICollectionViewDeleg
 
     private func setupCollectionView() {
         collectionView.backgroundColor = .clear
-        collectionView.showsHorizontalScrollIndicator = false
+        collectionView.showsHorizontalScrollIndicator = true
         collectionView.dataSource = self
         collectionView.delegate = self
         collectionView.register(TagPillCell.self, forCellWithReuseIdentifier: "TagPillCell")
@@ -31,11 +40,14 @@ class TagCarouselView: UIView, UICollectionViewDataSource, UICollectionViewDeleg
         addSubview(collectionView)
         collectionView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
-            make.height.equalTo(40)
         }
     }
 
-    // MARK: - UICollectionViewDataSource
+    func setTags(_ tags: [String]) {
+        self.tags = tags
+        collectionView.reloadData()
+    }
+
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return tags.count
     }
@@ -46,11 +58,11 @@ class TagCarouselView: UIView, UICollectionViewDataSource, UICollectionViewDeleg
         return cell
     }
 
-    // MARK: - UICollectionViewDelegateFlowLayout
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let text = tags[indexPath.item]
-        let font = UIFont.systemFont(ofSize: 15, weight: .semibold)
+        let font = UIFont.systemFont(ofSize: 12, weight: .semibold)
         let size = (text as NSString).size(withAttributes: [.font: font])
-        return CGSize(width: size.width + 32, height: 32) // 32 為左右 padding
+        let width = max(size.width + 24, 120)
+        return CGSize(width: width, height: 40)
     }
-} 
+}
