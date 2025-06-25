@@ -8,7 +8,11 @@
 import Foundation
 import Combine
 
-class CommentService {
+protocol CommentServiceProtocol {
+    func fetchComments(for postId: Int) -> AnyPublisher<[CommentModel], Error>
+}
+
+class CommentService:CommentServiceProtocol {
     private let session: URLSession
     
     init(session: URLSession = .shared) {

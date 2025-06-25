@@ -168,6 +168,8 @@ class PostDetailView: UIViewController{
             
             }
             .store(in: &cancellables)
+        
+        
     }
     
 }

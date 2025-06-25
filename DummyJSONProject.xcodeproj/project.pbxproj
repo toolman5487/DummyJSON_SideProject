@@ -44,6 +44,7 @@
 		15E8726F2E03BDFE0038BEB7 /* ProductTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15E8726E2E03BDFE0038BEB7 /* ProductTableViewCell.swift */; };
 		15E872712E03E02E0038BEB7 /* ProductDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15E872702E03E02E0038BEB7 /* ProductDetailViewController.swift */; };
 		15E872732E03EB9C0038BEB7 /* ReviewsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15E872722E03EB9C0038BEB7 /* ReviewsViewController.swift */; };
+		15FDA0352E0BD81900307357 /* CommentViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15FDA0342E0BD81900307357 /* CommentViewModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -82,6 +83,7 @@
 		15E8726E2E03BDFE0038BEB7 /* ProductTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductTableViewCell.swift; sourceTree = "<group>"; };
 		15E872702E03E02E0038BEB7 /* ProductDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductDetailViewController.swift; sourceTree = "<group>"; };
 		15E872722E03EB9C0038BEB7 /* ReviewsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewsViewController.swift; sourceTree = "<group>"; };
+		15FDA0342E0BD81900307357 /* CommentViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -138,6 +140,7 @@
 		152039032E06EFCA0062CE5D /* PostVM */ = {
 			isa = PBXGroup;
 			children = (
+				15FDA0322E0BD56700307357 /* CommentVM */,
 				152039042E06F3F50062CE5D /* PostViewModel.swift */,
 				1520390E2E07F0E40062CE5D /* PostDetailViewModel.swift */,
 			);
@@ -327,9 +330,8 @@
 		15E872532E02E94A0038BEB7 /* PostView */ = {
 			isa = PBXGroup;
 			children = (
+				15FDA0362E0BE42E00307357 /* PostHomeView */,
 				152039102E08478B0062CE5D /* PostDetailView */,
-				15E872582E02E9A40038BEB7 /* PostHomeViewController.swift */,
-				152039062E07DCB40062CE5D /* PostTableViewCell.swift */,
 			);
 			path = PostView;
 			sourceTree = "<group>";
@@ -391,6 +393,23 @@
 				1523AE6C2E03F1540025D5FF /* ReviewTableViewCell.swift */,
 			);
 			path = ReviewView;
+			sourceTree = "<group>";
+		};
+		15FDA0322E0BD56700307357 /* CommentVM */ = {
+			isa = PBXGroup;
+			children = (
+				15FDA0342E0BD81900307357 /* CommentViewModel.swift */,
+			);
+			path = CommentVM;
+			sourceTree = "<group>";
+		};
+		15FDA0362E0BE42E00307357 /* PostHomeView */ = {
+			isa = PBXGroup;
+			children = (
+				15E872582E02E9A40038BEB7 /* PostHomeViewController.swift */,
+				152039062E07DCB40062CE5D /* PostTableViewCell.swift */,
+			);
+			path = PostHomeView;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -500,6 +519,7 @@
 				15104BBB2E0A5778007F5E90 /* CommentService.swift in Sources */,
 				153CABC12E05A78F00EF259D /* CartItemModel.swift in Sources */,
 				152039142E08FE240062CE5D /* TagPillCell.swift in Sources */,
+				15FDA0352E0BD81900307357 /* CommentViewModel.swift in Sources */,
 				15E872622E0302700038BEB7 /* NetworkManager.swift in Sources */,
 				15104BB82E0A53C2007F5E90 /* CommentModel.swift in Sources */,
 				15E8723F2E02CA7D0038BEB7 /* AuthModel.swift in Sources */,
